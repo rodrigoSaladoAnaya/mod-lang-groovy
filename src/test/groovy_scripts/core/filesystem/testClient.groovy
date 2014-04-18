@@ -16,6 +16,7 @@
 
 package core.filesystem
 
+import org.vertx.groovy.core.buffer.Buffer
 import org.vertx.groovy.core.streams.Pump
 import org.vertx.groovy.testframework.TestUtils
 
@@ -123,6 +124,23 @@ def testPumpFile() {
       })
     })
   })
+}
+
+def testWriteWithBufPosHan() {
+  def fooFile =  fileDir + "/foo.tmp"
+  def fooTimes = 5
+    fs.open(fooFile) { ar ->
+      def buff = new Buffer('bar')
+      fooTimes.times {
+        ar.result.write(buff, buff.length * it, {})
+      }
+      fs.readFile(fooFile) { rf ->
+        def expected = 'bar' * fooTimes
+        def result = "${rf.result}"
+        tu.azzert(expected == result)
+        tu.testComplete()
+      }
+    }
 }
 
 def setup(doneHandler) {

@@ -63,5 +63,9 @@ public class GroovyFileSystemTest extends TestBase {
   public void testProps() throws Exception {
     startTest(getMethodName());
   }
-
+  
+  @Test
+  public void testWriteWithBufPosHan() {
+      startTest(getMethodName());
+  }
 }
